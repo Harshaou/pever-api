@@ -1,0 +1,18 @@
+import passport from 'passport';
+
+const requireLocalAuth = (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    console.log('err', err, 'user', user, 'info', info);
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      console.log(info)
+      return res.status(422).send(info);
+    }
+    req.user = user;
+    next();
+  })(req, res, next);
+};
+
+export default requireLocalAuth;
